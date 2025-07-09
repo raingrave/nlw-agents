@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "nlw_agents_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./.docker/postgres/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - nlw_agents_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  nlw_agents_network:
+    driver: bridge
